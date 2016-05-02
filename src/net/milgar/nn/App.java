@@ -18,21 +18,29 @@ public class App {
 				{ { 0, 1, 1 }, { 0, 1 } }, { { 1, 0, 0 }, { 1, 0 } }, { { 1, 0, 1 }, { 0, 1 } },
 				{ { 1, 1, 0 }, { 0, 1 } }, { { 1, 1, 1 }, { 1, 1 } } };
 
-		float[][][] data = dataXOR;
+		float[][][] data = dataFullAdder;
 
-		Network network = new Network(data[0][0].length, data[0][0].length, data[0][1].length);
+		Network network = new Network(data[0][0].length, data[0][0].length, data[0][0].length, data[0][1].length);
 
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			for (float[][] d : data) {
 				network.train(d[0], d[1]);
+			}
+			if (i % 100000 == 0) {
+				for (int j = 0; j < data.length; j++) {
+					List<Float> ans = network.feedForward(data[j][0]);
+					System.out.format("%s => %s %n", Arrays.toString(data[j][0]),
+							Arrays.toString(ans.toArray(new Float[ans.size()])));
+				}
+				System.out.println();
 			}
 		}
 
 		// System.out.println();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1; i++) {
 			for (int j = 0; j < data.length; j++) {
 				List<Float> ans = network.feedForward(data[j][0]);
-				if ((data[j][1][0] - ans.get(0)) > 0.01f) {
+				if ((data[j][1][0] - ans.get(0)) != 0.01f) {
 					System.out.format("%s => %s %n", Arrays.toString(data[j][0]),
 							Arrays.toString(ans.toArray(new Float[ans.size()])));
 				}

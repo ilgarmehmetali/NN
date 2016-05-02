@@ -8,6 +8,8 @@ public class Neuron {
 	protected Float output;
 	protected List<Connection> connections;
 	protected boolean bias;
+	protected float delta;
+	protected float sum;
 
 	public Neuron() {
 		this.connections = new ArrayList<>();
@@ -22,7 +24,7 @@ public class Neuron {
 
 	public void calcOutput() {
 		if (!this.bias) {
-			float sum = 0f;
+			this.sum = 0f;
 			for (Connection c : this.connections) {
 				if (c.getTo() == this) {
 					sum += c.getWeight() * c.getFrom().getOutput();
@@ -34,6 +36,22 @@ public class Neuron {
 
 	public void addConnection(Connection c) {
 		this.connections.add(c);
+	}
+
+	public void resetDelta() {
+		this.delta = 0;
+	}
+
+	public void setDelta(float value) {
+		this.delta = value;
+	}
+
+	public float getDelta() {
+		return this.delta;
+	}
+
+	public float getSum() {
+		return this.sum;
 	}
 
 	public float getOutput() {

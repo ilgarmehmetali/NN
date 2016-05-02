@@ -1,5 +1,7 @@
 package net.milgar.nn;
 
+import java.util.Random;
+
 public class Connection {
 
 	private Neuron from;
@@ -9,7 +11,7 @@ public class Connection {
 	public Connection(Neuron from, Neuron to) {
 		this.from = from;
 		this.to = to;
-		this.weight = ((float) Math.random() * 2) - 1;
+		this.weight = ((float) (new Random()).nextDouble() * 2) - 1;
 	}
 
 	public Connection(Neuron from, Neuron to, float weight) {
