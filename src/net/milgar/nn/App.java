@@ -12,7 +12,7 @@ public class App {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		int iterationCount = 2000;
+		int iterationCount = 3000;
 		float errors[][] = new float[iterationCount][];
 		try {
 			Path path = FileSystems.getDefault().getPath(".", "data.dat");

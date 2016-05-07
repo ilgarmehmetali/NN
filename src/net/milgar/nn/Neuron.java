@@ -34,6 +34,27 @@ public class Neuron {
 		}
 	}
 
+	public void calcDelta() {
+		float sum = 0f;
+		for (Connection c : this.getConnections()) {
+			if (c.getFrom() == this) {
+				sum += c.getWeight() * c.getTo().getDelta();
+			}
+		}
+
+		float deltaHiddenOutput = this.getOutput() * (1 - this.getOutput()) * sum;
+		this.setDelta(deltaHiddenOutput);
+	}
+
+	public void adjustWeights(float LEARNING_CONSTANT) {
+		for (Connection c : this.getConnections()) {
+			if (c.getTo() == this) {
+				float deltaWeight = c.getFrom().getOutput() * this.getDelta();
+				c.adjustWeight(LEARNING_CONSTANT * deltaWeight);
+			}
+		}
+	}
+
 	public void addConnection(Connection c) {
 		this.connections.add(c);
 	}

@@ -76,37 +76,19 @@ public class Network {
 		this.feedForward(input);
 
 		for (int i = 0; i < this.layers[this.layers.length - 1].length; i++) {
-			Neuron n = this.layers[this.layers.length - 1][i];
-			float delta = n.getOutput() * (1 - n.getOutput()) * (answer[i] - n.getOutput());
-			n.setDelta(delta);
-
-			for (Connection c : n.getConnections()) {
-				float deltaWeight = c.getFrom().getOutput() * delta;
-				c.adjustWeight(LEARNING_CONSTANT * deltaWeight);
-			}
+			OutputNeuron n = (OutputNeuron) this.layers[this.layers.length - 1][i];
+			n.calcDelta(answer[i] - n.getOutput());
+			n.adjustWeights(LEARNING_CONSTANT);
 		}
 
 		for (int i = this.layers.length - 2; i >= 0; i--) {
 			for (Neuron hidden : this.layers[i]) {
-				float sum = 0f;
-				for (Connection c : hidden.getConnections()) {
-					if (c.getFrom() == hidden) {
-						sum += c.getWeight() * c.getTo().getDelta();
-					}
-				}
-
-				for (Connection c : hidden.getConnections()) {
-					if (c.getTo() == hidden) {
-						float deltaHiddenOutput = hidden.getOutput() * (1 - hidden.getOutput()) * sum;
-						c.getTo().setDelta(deltaHiddenOutput);
-						float deltaWeight = c.getFrom().getOutput() * deltaHiddenOutput;
-						c.adjustWeight(LEARNING_CONSTANT * deltaWeight);
-					}
-				}
+				hidden.calcDelta();
+				hidden.adjustWeights(LEARNING_CONSTANT);
 			}
 		}
-		float[] err = new float[this.layers[this.layers.length - 1].length];
 
+		float[] err = new float[this.layers[this.layers.length - 1].length];
 		for (int i = 0; i < this.layers[this.layers.length - 1].length; i++) {
 			err[i] = this.layers[this.layers.length - 1][i].getOutput() - answer[i];
 		}
