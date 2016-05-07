@@ -72,11 +72,8 @@ public class Network {
 		return answer;
 	}
 
-	public float train(float[] input, float[] answer) {
+	public float[] train(float[] input, float[] answer) {
 		this.feedForward(input);
-		float[][] deltaOutputs = new float[this.layers.length][];
-		for (int i = 0; i < this.layers.length; i++)
-			deltaOutputs[i] = new float[this.layers[i].length];
 
 		for (int i = 0; i < this.layers[this.layers.length - 1].length; i++) {
 			Neuron n = this.layers[this.layers.length - 1][i];
@@ -94,9 +91,7 @@ public class Network {
 				float sum = 0f;
 				for (Connection c : hidden.getConnections()) {
 					if (c.getFrom() == hidden) {
-						sum += c.getWeight() * c.getTo().getDelta(); // TODO: her
-						// output için
-						// deltaOutput önceden hesaplanmalı
+						sum += c.getWeight() * c.getTo().getDelta();
 					}
 				}
 
@@ -110,34 +105,11 @@ public class Network {
 				}
 			}
 		}
+		float[] err = new float[this.layers[this.layers.length - 1].length];
 
-		/*		
-				for (HiddenNeuron[] hiddenNeurons : this.hiddenLayers) {
-					for (HiddenNeuron hidden : hiddenNeurons) {
-						float sum = 0f;
-						for (Connection c : hidden.getConnections()) {
-							if (c.getFrom() == hidden) {
-								sum += c.getWeight() * deltaOutput; // TODO: her
-																	// output için
-																	// deltaOutput önceden hesaplanmalı
-							}
-						}
-		
-						for (Connection c : hidden.getConnections()) {
-							if (c.getTo() == hidden) {
-								float deltaHiddenOutput = hidden.getOutput() * (1 - hidden.getOutput()) * sum;
-								float deltaWeight = c.getFrom().getOutput() * deltaHiddenOutput;
-								c.adjustWeight(LEARNING_CONSTANT * deltaWeight);
-							}
-						}
-		
-					}
-				}
-		*/
-		float avgError = 0f;
 		for (int i = 0; i < this.layers[this.layers.length - 1].length; i++) {
-			avgError += answer[i] - this.layers[this.layers.length - 1][i].getOutput();
+			err[i] = this.layers[this.layers.length - 1][i].getOutput() - answer[i];
 		}
-		return avgError / this.layers[this.layers.length - 1].length;
+		return err;
 	}
 }
