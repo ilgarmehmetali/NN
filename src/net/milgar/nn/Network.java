@@ -54,7 +54,7 @@ public class Network {
 	public List<Float> feedForward(float[] input) {
 		for (int i = 0; i < this.layers[0].length - 1; i++) {
 			Neuron[] l = this.layers[0];
-			InputNeuron n = (InputNeuron) l[i];
+			InputNeuron n = Utils.as(l[i], InputNeuron.class);
 			n.setInput(input[i]);
 		}
 

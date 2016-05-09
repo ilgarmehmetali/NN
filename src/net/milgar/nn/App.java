@@ -20,24 +20,6 @@ public class App {
 			List<float[]> dataOutput = new ArrayList<>();
 			Utils.loadTrainingData(path, dataInput, dataOutput, 3);
 
-			/*
-			 * float[][] dataXORInput = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 }
-			 * }; float[][] dataXOROutput = { { 0 }, { 1 }, { 1 }, { 0 } };
-			 * 
-			 * float[][] dataORInput = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 }
-			 * }; float[][] dataOROutput = { { 0 }, { 1 }, { 1 }, { 1 } };
-			 * 
-			 * float[][] dataANDInput = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 }
-			 * }; float[][] dataANDOutput = { { 0 }, { 0 }, { 0 }, { 1 } };
-			 * 
-			 * float[][] dataFullAdderInput = { { 0, 0, 0 }, { 0, 0, 1 }, { 0,
-			 * 1, 0 }, { 0, 1, 1 }, { 1, 0, 0 }, { 1, 0, 1 }, { 1, 1, 0 }, { 1,
-			 * 1, 1 } };
-			 * 
-			 * float[][] dataFullAdderOutput = { { 0, 0 }, { 1, 0 }, { 1, 0 }, {
-			 * 0, 1 }, { 1, 0 }, { 0, 1 }, { 0, 1 }, { 1, 1 } };
-			 */
-
 			float[][] input = dataInput.toArray(new float[dataInput.size()][]);
 			float[][] output = dataOutput.toArray(new float[dataInput.size()][]);
 			int trainingSetCount = (int) (input.length * 0.8f);
