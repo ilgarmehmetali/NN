@@ -3,6 +3,7 @@ package net.milgar.nn;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -34,15 +35,26 @@ public class Utils {
 		}
 	}
 
-	public static void write(String filename, float[][] x) throws IOException {
+	public static <T> void write(String filename, List<T> x) throws IOException {
 		BufferedWriter outputWriter = null;
 		outputWriter = new BufferedWriter(new FileWriter(filename));
-		for (int i = 0; i < x.length; i++) {
-			outputWriter.write(Float.toString(Math.abs(x[i][0])) + " " + Float.toString(Math.abs(x[i][1])) + " "
-					+ Float.toString(Math.abs(x[i][2])));
+		for (int i = 0; i < x.size(); i++) {
+			outputWriter.write("" + x.get(i));
 			outputWriter.newLine();
 		}
 		outputWriter.flush();
 		outputWriter.close();
+	}
+
+	public static <T> T[] concatenate(T[] a, T[] b) {
+		int aLen = a.length;
+		int bLen = b.length;
+
+		@SuppressWarnings("unchecked")
+		T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+		System.arraycopy(a, 0, c, 0, aLen);
+		System.arraycopy(b, 0, c, aLen, bLen);
+
+		return c;
 	}
 }
